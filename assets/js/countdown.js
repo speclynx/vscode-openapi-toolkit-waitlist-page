@@ -1,7 +1,7 @@
 // Set the launch date (August 15, 2025, 12:00 PM)
 // Using a simpler date string for better browser compatibility.
 // This will interpret 12:00 PM in the user's local timezone.
-const launchDate = new Date("Aug 15, 2025 12:00:00").getTime();
+const launchDate = new Date("Aug 31, 2025 23:59:00").getTime();
 
 // Ensure the DOM is fully loaded before trying to access elements
 document.addEventListener('DOMContentLoaded', (event) => {
