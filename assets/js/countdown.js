@@ -1,7 +1,7 @@
 // Set the launch date (August 15, 2025, 12:00 PM)
 // Using a simpler date string for better browser compatibility.
 // This will interpret 12:00 PM in the user's local timezone.
-const launchDate = new Date("Aug 31, 2025 23:59:00").getTime();
+const launchDate = new Date("Sep 7, 2025 23:59:00").getTime();
 
 // Ensure the DOM is fully loaded before trying to access elements
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -12,10 +12,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const minutesSpan = document.getElementById("minutes");
     const secondsSpan = document.getElementById("seconds");
 
+    let countdownFunctionInterval; // Declare upfront
+
     // Function to update the countdown
     function updateCountdown() {
         const now = new Date().getTime();
         const distance = launchDate - now;
+
+        // If the countdown is finished or negative
+        if (distance <= 0) {
+            if (countdownFunctionInterval) clearInterval(countdownFunctionInterval);
+            if (daysSpan && hoursSpan && minutesSpan && secondsSpan) {
+                daysSpan.innerHTML = '00';
+                hoursSpan.innerHTML = '00';
+                minutesSpan.innerHTML = '00';
+                secondsSpan.innerHTML = '00';
+            }
+            if (countdownContainer) {
+                countdownContainer.innerHTML = "<p class='text-2xl text-primary-dark font-bold'>SpecLynx OpenAPI Toolkit will be available momentarily!</p>";
+            }
+            return;
+        }
 
         // Time calculations for days, hours, minutes and seconds
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -30,17 +47,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             minutesSpan.innerHTML = String(minutes).padStart(2, '0');
             secondsSpan.innerHTML = String(seconds).padStart(2, '0');
         }
-
-        // If the countdown is finished
-        if (distance < 0) {
-            clearInterval(countdownFunctionInterval); // Clear the interval
-            if (countdownContainer) {
-                countdownContainer.innerHTML = "<p class='text-2xl text-primary-dark font-bold'>SpecLynx OpenAPI Toolkit is now available!</p>";
-            }
-        }
     }
 
     // Run the countdown immediately on load, then every second
     updateCountdown(); // Initial call
-    const countdownFunctionInterval = setInterval(updateCountdown, 1000);
+    countdownFunctionInterval = setInterval(updateCountdown, 1000);
 });
